@@ -1,0 +1,118 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/larrybohn/scraper/1.0.0"
+    },
+    {
+      "description": "TVMaze scraper API deployed to Azure",
+      "url": "http://scraper-cloud.northeurope.cloudapp.azure.com/api"
+    }
+  ],
+  "info": {
+    "description": "This is an API for retrieving TV shows and cast scraped from TVMaze",
+    "version": "1.0.0",
+    "title": "TVMaze Scraper API",
+    "contact": {
+      "email": "andrey.sumar@gmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "TV Shows",
+      "description": "API calls for fetching TV shows information"
+    }
+  ],
+  "paths": {
+    "/shows": {
+      "get": {
+        "tags": [
+          "TV Shows"
+        ],
+        "summary": "gets TV shows with their cast",
+        "operationId": "searchInventory",
+        "description": "Gets the specified page of TV shows with their cast. Page size is 10 shows. Cast is ordered by birthday descending.\n",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Page number starting from 1. Default is 1.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TV shows matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Show"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Page number is not valid"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Show": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "cast"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 5
+          },
+          "name": {
+            "type": "string",
+            "example": "Game of Thrones"
+          },
+          "cast": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Actor"
+            }
+          }
+        }
+      },
+      "Actor": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "birthday"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 17
+          },
+          "name": {
+            "type": "string",
+            "example": "Dean Norris"
+          },
+          "birthday": {
+            "type": "string",
+            "example": "1963-04-08"
+          }
+        }
+      }
+    }
+  }
+}
